@@ -1,0 +1,23 @@
+{
+  "$schema": "https://raw.githubusercontent.com/rozd/theme-kit/main/theme.schema.json",
+  "styles": {
+    "colors": [
+      "surface",
+      "onSurface",
+      "icon",
+    ],
+    "gradients": [
+        "primaryGradient",
+    ],
+    "meshGradients": [
+        "primaryBackground",
+    ],
+    "shadows": [
+        "card",
+    ]
+  },
+  "config": {
+      "outputPath": "DesignSystem/Theme",
+      "shouldGeneratePreview": true,
+  }
+}

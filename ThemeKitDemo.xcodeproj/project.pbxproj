@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		50A90ADC2F45D71A009A3E73 /* ThemeKit in Frameworks */ = {isa = PBXBuildFile; productRef = 50A90ADB2F45D71A009A3E73 /* ThemeKit */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		50A90AB22F45D48B009A3E73 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50A90ADC2F45D71A009A3E73 /* ThemeKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +117,7 @@
 			);
 			name = ThemeKitDemo;
 			packageProductDependencies = (
+				50A90ADB2F45D71A009A3E73 /* ThemeKit */,
 			);
 			productName = ThemeKitDemo;
 			productReference = 50A90AA42F45D488009A3E73 /* ThemeKitDemo.app */;
@@ -195,6 +201,9 @@
 			);
 			mainGroup = 50A90A9B2F45D488009A3E73;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				50A90ADA2F45D71A009A3E73 /* XCLocalSwiftPackageReference "../theme-kit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 50A90AA52F45D488009A3E73 /* Products */;
 			projectDirPath = "";
@@ -329,6 +338,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -386,6 +396,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -417,7 +428,7 @@
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -449,7 +460,7 @@
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -578,6 +589,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		50A90ADA2F45D71A009A3E73 /* XCLocalSwiftPackageReference "../theme-kit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "../theme-kit";
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		50A90ADB2F45D71A009A3E73 /* ThemeKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ThemeKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 50A90A9C2F45D488009A3E73 /* Project object */;
 }
