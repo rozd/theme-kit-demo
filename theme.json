@@ -3,6 +3,7 @@
   "styles": {
     "colors": [
       "surface",
+      "cardSurface",
       "onSurface",
       "icon",
       { "name": "primary", "style": "primaryColor" }

@@ -26,23 +26,23 @@ struct ContentView: View {
 
             TabView(selection: $tab) {
                 ColorsScreen()
-                    .tabItem { Label("Colors", systemImage: "paintpalette.fill") }
+                    .tabItem { Label("Colors", systemImage: "heart.fill") }
                     .tag(ContentTab.colors)
 
                 GradientsScreen()
-                    .tabItem { Label("Gradients", systemImage: "circle.lefthalf.filled") }
+                    .tabItem { Label("Gradients", systemImage: "star.fill") }
                     .tag(ContentTab.gradients)
 
                 ShadowsScreen()
-                    .tabItem { Label("Shadows", systemImage: "square.stack.3d.up.fill") }
+                    .tabItem { Label("Shadows", systemImage: "bookmark.fill") }
                     .tag(ContentTab.shadows)
 
                 MeshScreen()
-                    .tabItem { Label("Mesh", systemImage: "square.grid.2x2.fill") }
+                    .tabItem { Label("Mesh", systemImage: "chart.bar.xaxis") }
                     .tag(ContentTab.mesh)
 
                 JSONScreen()
-                    .tabItem { Label("JSON", systemImage: "curlybraces") }
+                    .tabItem { Label("JSON", systemImage: "list.bullet") }
                     .tag(ContentTab.json)
             }
         }

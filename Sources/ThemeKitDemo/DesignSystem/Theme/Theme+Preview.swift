@@ -17,6 +17,7 @@ public struct ThemePreview: View {
                         .font(.headline)
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: 96))], spacing: 12) {
                             ColorSwatch(name: "surface", style: .surface)
+                            ColorSwatch(name: "cardSurface", style: .cardSurface)
                             ColorSwatch(name: "onSurface", style: .onSurface)
                             ColorSwatch(name: "icon", style: .icon)
                             ColorSwatch(name: "primary", style: .primaryColor)

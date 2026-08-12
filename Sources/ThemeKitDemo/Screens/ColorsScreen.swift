@@ -11,11 +11,14 @@ struct ColorsScreen: View {
             title: "Colors",
             subtitle: "foregroundStyle · background · border · fill · stroke"
         ) {
+            // Symbol choice matters for parity: Skip maps a few hundred SF Symbols onto Material
+            // icons and renders anything else as a missing-glyph placeholder, so this demo sticks
+            // to mapped names. That is a Skip limitation, unrelated to token resolution.
             Sample("foregroundStyle(.icon)") {
                 HStack(spacing: 12) {
-                    Image(systemName: "paintbrush.fill")
-                    Image(systemName: "sparkles")
-                    Image(systemName: "flame.fill")
+                    Image(systemName: "heart.fill")
+                    Image(systemName: "star.fill")
+                    Image(systemName: "bell.fill")
                 }
                 .font(.largeTitle)
                 .foregroundStyle(.icon)

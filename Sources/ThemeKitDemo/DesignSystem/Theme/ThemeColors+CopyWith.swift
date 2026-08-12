@@ -6,12 +6,14 @@ import ThemeKit
 extension ThemeColors {
     nonisolated public func copyWith(
         surface: ThemeAdaptiveStyle<Color>? = nil,
+        cardSurface: ThemeAdaptiveStyle<Color>? = nil,
         onSurface: ThemeAdaptiveStyle<Color>? = nil,
         icon: ThemeAdaptiveStyle<Color>? = nil,
         primary: ThemeAdaptiveStyle<Color>? = nil
     ) -> ThemeColors {
         ThemeColors(
             surface: surface ?? self.surface,
+            cardSurface: cardSurface ?? self.cardSurface,
             onSurface: onSurface ?? self.onSurface,
             icon: icon ?? self.icon,
             primary: primary ?? self.primary

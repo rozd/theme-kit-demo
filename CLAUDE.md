@@ -4,44 +4,59 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is an iOS SwiftUI demo app for the [ThemeKit](https://github.com/rozd/theme-kit) Swift package. ThemeKit provides a native-feeling theme system where design tokens (colors, gradients, shadows) resolve automatically for light/dark color schemes and are used identically to built-in SwiftUI styles (e.g., `.foregroundStyle(.primaryColor)`).
+A dual-platform [Skip](https://skip.dev) app demonstrating [ThemeKit](https://github.com/rozd/theme-kit)
+on iOS **and** Android from a single source tree.
 
-## Build & Test Commands
+Its job is not decorative. ThemeKit's Android render path is emitted into a file
+(`View+ThemeStyles.swift`) that is entirely `#if os(Android)`, so ThemeKit's own Darwin-only fixture
+targets compile it to nothing. **This app is that file's only real compile coverage**, and the
+iOS/Android screenshot pairs in `Screenshots/` are the only check that the two platforms actually
+render the same tokens. A generator template change in ThemeKit should be rebuilt here.
 
-This is an Xcode project (not Swift Package Manager). Use `xcodebuild` from the CLI:
+## Layout
 
-```bash
-# Build
-xcodebuild -project ThemeKitDemo.xcodeproj -scheme ThemeKitDemo -destination 'platform=iOS Simulator,name=iPhone 16' build
-
-# Run all unit tests
-xcodebuild -project ThemeKitDemo.xcodeproj -scheme ThemeKitDemo -destination 'platform=iOS Simulator,name=iPhone 16' test
-
-# Run a single test (Swift Testing framework)
-xcodebuild -project ThemeKitDemo.xcodeproj -scheme ThemeKitDemo -destination 'platform=iOS Simulator,name=iPhone 16' test -only-testing:ThemeKitDemoTests/ThemeKitDemoTests/example
+```
+Package.swift              SwiftPM manifest — skipstone plugin + path dep on ../theme-kit
+Skip.env                   Shared config for Darwin/*.xcconfig and Android/settings.gradle.kts
+theme.json                 Token config; all four categories
+Sources/ThemeKitDemo/
+  ContentView.swift        Tab host, theme picker, appearance picker, environment injection
+  Screens/                 One screen per token category, plus the JSON round-trip screen
+  DesignSystem/Theme/      Generated — do not edit by hand
+Darwin/ThemeKitDemo.xcodeproj   iOS/macOS run target
+Android/                        Gradle harness
+Screenshots/{ios,android}/      Parity baseline
 ```
 
-## Architecture & Key Patterns
+## Build & Run
 
-### Swift Concurrency Settings
+```bash
+swift build                                     # Apple-side compile
+skip android build --plain                      # Android cross-compile — the important one
+skip app launch --android                       # Build, install and launch on a running emulator
+swift package --allow-writing-to-package-directory generate-theme   # Regenerate DesignSystem/Theme
+```
 
-The project enables **strict concurrency by default**: `SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor` and `SWIFT_APPROACHABLE_CONCURRENCY = YES`. All types are implicitly `@MainActor`-isolated unless explicitly opted out with `nonisolated`.
+iOS runs from `Darwin/ThemeKitDemo.xcodeproj`, scheme `ThemeKitDemo App`. Note that
+`xcodebuild` needs `-skipPackagePluginValidation -skipMacroValidation` for the skipstone plugin,
+and that `SKIP_ACTION = launch` in `Darwin/ThemeKitDemo.xcconfig` makes an Xcode run also deploy to a
+running Android emulator.
 
-### Test Frameworks
+## Rules for demo code
 
-- **Unit tests** (`ThemeKitDemoTests/`): Swift Testing framework (`import Testing`, `@Test` macro)
-- **UI tests** (`ThemeKitDemoUITests/`): XCTest framework (`import XCTest`)
+- **No `#if os(Android)` in `Sources/ThemeKitDemo/`.** The whole claim is that the call sites are
+  identical; a platform conditional in app code would quietly void it.
+- **No hand resolution.** Never write `theme.colors.x.resolved(colorScheme:)` in a screen — use the
+  token spelling (`.foregroundStyle(.primaryColor)`). The exception is `JSONScreen`, which reads
+  `@Environment(\.theme)` because encoding the theme *is* its subject.
+- **Author colours with `Color(hex:)`.** Colours built any other way cannot encode on Android, which
+  would break the JSON screen. Avoid `.opacity(_:)` too — `#RRGGBB` has no alpha channel.
+- **Only Skip-mapped SF Symbols.** Skip maps a few hundred SF Symbols onto Material icons and renders
+  everything else as a missing-glyph placeholder, which reads as a ThemeKit bug in a screenshot when
+  it is not one. The mapping lives in skip-ui's `Components/Image.swift`.
+- `@Environment` properties in shared views must be non-`private` — Skip requires it.
 
-### ThemeKit Integration Pattern
+## ThemeKit dependency
 
-ThemeKit's core type is `ThemeAdaptiveStyle<Style: ShapeStyle>`, which conforms to `ShapeStyle` and resolves light/dark variants from the SwiftUI environment. The typical integration:
-
-1. Define a `theme.json` config with token names for colors, gradients, and shadows
-2. Run the ThemeKit Xcode command plugin to generate theme types and `ShapeStyle` extensions
-3. Provide default values in a `Theme+Default.swift` extension
-4. Inject the theme via `.environment(\.theme, theme)` at the app root
-5. Use tokens as standard SwiftUI styles: `.foregroundStyle(.primaryColor)`, `.fill(.surface)`
-
-### Deployment Target
-
-iOS 26.2+ (Xcode 26.3 beta toolchain), Swift 5.0 language version.
+`.package(path: "../theme-kit")`, deliberately: the Android render path lives on ThemeKit's
+integration branch and has not been released. Switch to the versioned GitHub URL once it merges.

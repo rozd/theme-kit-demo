@@ -35,7 +35,7 @@ struct GradientsScreen: View {
             }
 
             Sample("foregroundStyle(.sunsetGradient)") {
-                Image(systemName: "sun.max.fill")
+                Image(systemName: "star.fill")
                     .font(.system(size: 64))
                     .foregroundStyle(.sunsetGradient)
             }

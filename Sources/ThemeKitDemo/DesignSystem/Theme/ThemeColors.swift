@@ -5,17 +5,20 @@ import ThemeKit
 
 nonisolated public struct ThemeColors: Sendable, Codable, Equatable {
     public let surface: ThemeAdaptiveStyle<Color>
+    public let cardSurface: ThemeAdaptiveStyle<Color>
     public let onSurface: ThemeAdaptiveStyle<Color>
     public let icon: ThemeAdaptiveStyle<Color>
     public let primary: ThemeAdaptiveStyle<Color>
 
     nonisolated public init(
         surface: ThemeAdaptiveStyle<Color>,
+        cardSurface: ThemeAdaptiveStyle<Color>,
         onSurface: ThemeAdaptiveStyle<Color>,
         icon: ThemeAdaptiveStyle<Color>,
         primary: ThemeAdaptiveStyle<Color>
     ) {
         self.surface = surface
+        self.cardSurface = cardSurface
         self.onSurface = onSurface
         self.icon = icon
         self.primary = primary

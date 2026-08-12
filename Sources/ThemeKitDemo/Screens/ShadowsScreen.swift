@@ -3,7 +3,7 @@ import ThemeKit
 
 /// Shadow tokens, including the composing form.
 ///
-/// `.surface.card` is the interesting one: a shadow token chained onto a *style* token, which
+/// `.cardSurface.card` is the interesting one: a shadow token chained onto a *style* token, which
 /// only resolves because the modifier's parameter is a protocol-constrained generic — `ShapeStyle`
 /// on Apple, ThemeKit's generated `ThemeStyleResolving` on Android. Chaining onto a non-theme
 /// style (`.red.card`) is Apple-only for now; letting `Color` conform on Android would make
@@ -12,25 +12,25 @@ struct ShadowsScreen: View {
     var body: some View {
         Screen(
             title: "Shadows",
-            subtitle: "Standalone tokens and the .surface.card composing form"
+            subtitle: "Standalone tokens and the .cardSurface.card composing form"
         ) {
-            Sample("background(.surface.card, in:)") {
+            Sample("background(.cardSurface.card, in:)") {
                 Text("Card")
                     .font(.headline)
                     .foregroundStyle(.onSurface)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 28)
-                    .background(.surface.card, in: RoundedRectangle(cornerRadius: 16))
+                    .background(.cardSurface.card, in: RoundedRectangle(cornerRadius: 16))
                     .padding(6)
             }
 
-            Sample("background(.surface.raised, in:)", note: "Larger radius, default shadow colour") {
+            Sample("background(.cardSurface.raised, in:)", note: "Larger radius, default shadow colour") {
                 Text("Raised")
                     .font(.headline)
                     .foregroundStyle(.onSurface)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 28)
-                    .background(.surface.raised, in: RoundedRectangle(cornerRadius: 16))
+                    .background(.cardSurface.raised, in: RoundedRectangle(cornerRadius: 16))
                     .padding(10)
             }
 
@@ -46,9 +46,9 @@ struct ShadowsScreen: View {
                 note: "Inner shadows are data-only on Android, so this demo uses drop shadows throughout."
             ) {
                 RoundedRectangle(cornerRadius: 16)
-                    .fill(.surface)
+                    .fill(.cardSurface)
                     .frame(height: 60)
-                    .background(.surface.raised, in: RoundedRectangle(cornerRadius: 16))
+                    .background(.cardSurface.raised, in: RoundedRectangle(cornerRadius: 16))
                     .padding(10)
             }
         }

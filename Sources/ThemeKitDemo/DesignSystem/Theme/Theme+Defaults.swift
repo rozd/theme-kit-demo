@@ -34,10 +34,13 @@ nonisolated extension Theme {
 
 nonisolated extension ThemeColors {
     static let `default` = ThemeColors(
-        surface:   .init(light: Color(hex: 0xF7F5F2), dark: Color(hex: 0x1A1A1F)),
-        onSurface: .init(light: Color(hex: 0x1A1A1F), dark: Color(hex: 0xF2F2F7)),
-        icon:      .init(light: Color(hex: 0xB3541E), dark: Color(hex: 0xF2A65A)),
-        primary:   .init(light: Color(hex: 0x0066CC), dark: Color(hex: 0x4DA6FF))
+        surface:     .init(light: Color(hex: 0xEDE9E3), dark: Color(hex: 0x121216)),
+        // Deliberately distinct from `surface`: a shadow cast by a card the same colour as the
+        // page behind it is invisible, which would make the shadow screenshots prove nothing.
+        cardSurface: .init(light: Color(hex: 0xFFFFFF), dark: Color(hex: 0x2A2A33)),
+        onSurface:   .init(light: Color(hex: 0x1A1A1F), dark: Color(hex: 0xF2F2F7)),
+        icon:        .init(light: Color(hex: 0xB3541E), dark: Color(hex: 0xF2A65A)),
+        primary:     .init(light: Color(hex: 0x0066CC), dark: Color(hex: 0x4DA6FF))
     )
 }
 

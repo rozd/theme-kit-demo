@@ -28,7 +28,7 @@ struct JSONScreen: View {
                 }
                 .padding(14)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .background(.surface.card, in: RoundedRectangle(cornerRadius: 12))
+                .background(.cardSurface.card, in: RoundedRectangle(cornerRadius: 12))
                 .padding(4)
             }
 
@@ -38,7 +38,7 @@ struct JSONScreen: View {
                     .foregroundStyle(.onSurface)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(12)
-                    .background(.surface.raised, in: RoundedRectangle(cornerRadius: 12))
+                    .background(.cardSurface.raised, in: RoundedRectangle(cornerRadius: 12))
                     .padding(4)
             }
         }
