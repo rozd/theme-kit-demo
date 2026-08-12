@@ -7,17 +7,17 @@ nonisolated public struct ThemeColors: Sendable, Codable, Equatable {
     public let surface: ThemeAdaptiveStyle<Color>
     public let onSurface: ThemeAdaptiveStyle<Color>
     public let icon: ThemeAdaptiveStyle<Color>
-    public let accent: ThemeAdaptiveStyle<Color>
+    public let primary: ThemeAdaptiveStyle<Color>
 
     nonisolated public init(
         surface: ThemeAdaptiveStyle<Color>,
         onSurface: ThemeAdaptiveStyle<Color>,
         icon: ThemeAdaptiveStyle<Color>,
-        accent: ThemeAdaptiveStyle<Color>
+        primary: ThemeAdaptiveStyle<Color>
     ) {
         self.surface = surface
         self.onSurface = onSurface
         self.icon = icon
-        self.accent = accent
+        self.primary = primary
     }
 }

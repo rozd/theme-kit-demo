@@ -1,180 +1,110 @@
 import SwiftUI
+import ThemeKit
 
 enum ContentTab: String, Hashable {
-    case welcome, home, settings
+    case colors, gradients, shadows, mesh, json
 }
 
+/// The demo's root.
+///
+/// Two controls sit above every screen because they are what the screens are *for*: the theme
+/// picker exercises runtime switching (`copyWith`-derived themes), and the appearance picker
+/// forces light/dark so a parity screenshot pair can be captured identically on both platforms
+/// without reaching for `adb shell cmd uimode` on one and the simulator UI on the other.
 struct ContentView: View {
-    @AppStorage("tab") var tab = ContentTab.welcome
-    @AppStorage("name") var welcomeName = "Skipper"
+    @AppStorage("tab") var tab = ContentTab.colors
+    @AppStorage("theme") var themeName = ThemeChoice.default.rawValue
     @AppStorage("appearance") var appearance = ""
-    @State var viewModel = ViewModel()
+
+    var theme: Theme {
+        ThemeChoice(rawValue: themeName)?.theme ?? .default
+    }
 
     var body: some View {
-        TabView(selection: $tab) {
-            NavigationStack {
-                WelcomeView(welcomeName: $welcomeName)
-            }
-            .tabItem { Label("Welcome", systemImage: "heart.fill") }
-            .tag(ContentTab.welcome)
+        VStack(spacing: 0) {
+            ThemeControls(themeName: $themeName, appearance: $appearance)
 
-            NavigationStack {
-                ItemListView()
-                    .navigationTitle(Text("\(viewModel.items.count) Items"))
-            }
-            .tabItem { Label("Home", systemImage: "house.fill") }
-            .tag(ContentTab.home)
+            TabView(selection: $tab) {
+                ColorsScreen()
+                    .tabItem { Label("Colors", systemImage: "paintpalette.fill") }
+                    .tag(ContentTab.colors)
 
-            NavigationStack {
-                SettingsView(appearance: $appearance, welcomeName: $welcomeName)
-                    .navigationTitle("Settings")
+                GradientsScreen()
+                    .tabItem { Label("Gradients", systemImage: "circle.lefthalf.filled") }
+                    .tag(ContentTab.gradients)
+
+                ShadowsScreen()
+                    .tabItem { Label("Shadows", systemImage: "square.stack.3d.up.fill") }
+                    .tag(ContentTab.shadows)
+
+                MeshScreen()
+                    .tabItem { Label("Mesh", systemImage: "square.grid.2x2.fill") }
+                    .tag(ContentTab.mesh)
+
+                JSONScreen()
+                    .tabItem { Label("JSON", systemImage: "curlybraces") }
+                    .tag(ContentTab.json)
             }
-            .tabItem { Label("Settings", systemImage: "gearshape.fill") }
-            .tag(ContentTab.settings)
         }
-        .environment(viewModel)
+        // The one injection point. Everything below reads tokens as if they were built in.
+        .environment(\.theme, theme)
         .preferredColorScheme(appearance == "dark" ? .dark : appearance == "light" ? .light : nil)
     }
 }
 
-struct WelcomeView : View {
-    @State var heartBeating = false
-    @Binding var welcomeName: String
+enum ThemeChoice: String, CaseIterable {
+    case `default`
+    case ocean
 
-    var body: some View {
-        VStack(spacing: 0) {
-            Text("Hello [\(welcomeName)](https://skip.dev)!")
-                .padding()
-            Image(systemName: "heart.fill")
-                .foregroundStyle(.red)
-                .scaleEffect(heartBeating ? 1.5 : 1.0)
-                .task {
-                    withAnimation(.easeInOut(duration: 1).repeatForever()) {
-                        heartBeating = true
-                    }
-                }
+    var theme: Theme {
+        switch self {
+        case .default: return .default
+        case .ocean: return .ocean
         }
-        .font(.largeTitle)
     }
-}
 
-struct ItemListView : View {
-    @Environment(ViewModel.self) var viewModel: ViewModel
-
-    var body: some View {
-        List {
-            ForEach(viewModel.items) { item in
-                NavigationLink(value: item) {
-                    Label {
-                        Text(item.itemTitle)
-                    } icon: {
-                        if item.favorite {
-                            Image(systemName: "star.fill")
-                                .foregroundStyle(.yellow)
-                        }
-                    }
-                }
-            }
-            .onDelete { offsets in
-                viewModel.items.remove(atOffsets: offsets)
-            }
-            .onMove { fromOffsets, toOffset in
-                viewModel.items.move(fromOffsets: fromOffsets, toOffset: toOffset)
-            }
-        }
-        .navigationDestination(for: Item.self) { item in
-            ItemView(item: item)
-                .navigationTitle(item.itemTitle)
-        }
-        .toolbar {
-            ToolbarItemGroup {
-                Button {
-                    withAnimation {
-                        viewModel.items.insert(Item(), at: 0)
-                    }
-                } label: {
-                    Label("Add", systemImage: "plus")
-                }
-            }
+    var title: String {
+        switch self {
+        case .default: return "Default"
+        case .ocean: return "Ocean"
         }
     }
 }
 
-struct ItemView : View {
-    @State var item: Item
-    @Environment(ViewModel.self) var viewModel: ViewModel
-    @Environment(\.dismiss) var dismiss
-
-    var body: some View {
-        Form {
-            TextField("Title", text: $item.title)
-                .textFieldStyle(.roundedBorder)
-            Toggle("Favorite", isOn: $item.favorite)
-            DatePicker("Date", selection: $item.date)
-            Text("Notes").font(.title3)
-            TextEditor(text: $item.notes)
-                .border(Color.secondary, width: 1.0)
-        }
-        .navigationBarBackButtonHidden()
-        .toolbar {
-            ToolbarItem(placement: .cancellationAction) {
-                Button("Cancel") {
-                    dismiss()
-                }
-            }
-            ToolbarItem(placement: .confirmationAction) {
-                Button("Save") {
-                    viewModel.save(item: item)
-                    dismiss()
-                }
-                .disabled(!viewModel.isUpdated(item))
-            }
-        }
-    }
-}
-
-struct SettingsView : View {
+/// Plain buttons rather than a segmented `Picker`: both platforms render buttons the same way,
+/// which keeps the parity screenshots comparable.
+struct ThemeControls: View {
+    @Binding var themeName: String
     @Binding var appearance: String
-    @Binding var welcomeName: String
 
     var body: some View {
-        Form {
-            TextField("Name", text: $welcomeName)
-            Picker("Appearance", selection: $appearance) {
-                Text("System").tag("")
-                Text("Light").tag("light")
-                Text("Dark").tag("dark")
+        VStack(spacing: 8) {
+            HStack(spacing: 8) {
+                ForEach(ThemeChoice.allCases, id: \.rawValue) { choice in
+                    Button(choice.title) {
+                        themeName = choice.rawValue
+                    }
+                    .buttonStyle(.bordered)
+                    .disabled(themeName == choice.rawValue)
+                }
             }
-            if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String,
-               let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
-                Text("Version \(version) (\(buildNumber))")
-            }
-            HStack {
-                PlatformHeartView()
-                Text("Powered by [Skip](https://skip.dev)")
+            HStack(spacing: 8) {
+                appearanceButton("System", "")
+                appearanceButton("Light", "light")
+                appearanceButton("Dark", "dark")
             }
         }
+        .padding(.vertical, 10)
+        .frame(maxWidth: .infinity)
+        // A theme token styling the chrome itself, via the ordinary spelling.
+        .background(.surface)
     }
-}
 
-/// A view that shows a blue heart on iOS and a green heart on Android.
-struct PlatformHeartView : View {
-    var body: some View {
-        #if os(Android)
-        ComposeView {
-            HeartComposer()
+    func appearanceButton(_ title: String, _ value: String) -> some View {
+        Button(title) {
+            appearance = value
         }
-        #else
-        Text(verbatim: "💙")
-        #endif
+        .buttonStyle(.bordered)
+        .disabled(appearance == value)
     }
 }
-
-#if SKIP
-/// Use a ContentComposer to integrate Compose content. This code will be transpiled to Kotlin.
-struct HeartComposer : ContentComposer {
-    @Composable func Compose(context: ComposeContext) {
-        androidx.compose.material3.Text("💚", modifier: context.modifier)
-    }
-}
-#endif

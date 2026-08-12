@@ -11,13 +11,13 @@ nonisolated extension ShapeStyle where Self == ThemeShapeStyle<Color> {
     public static var surface: Self { .init(keyPath: \.colors.surface) }
     public static var onSurface: Self { .init(keyPath: \.colors.onSurface) }
     public static var icon: Self { .init(keyPath: \.colors.icon) }
-    public static var accentColor: Self { .init(keyPath: \.colors.accent) }
+    public static var primaryColor: Self { .init(keyPath: \.colors.primary) }
 }
 #else
 nonisolated extension ThemeStyleResolving where Self == ThemeShapeStyle<Color> {
     public static var surface: Self { .init(keyPath: \.colors.surface) }
     public static var onSurface: Self { .init(keyPath: \.colors.onSurface) }
     public static var icon: Self { .init(keyPath: \.colors.icon) }
-    public static var accentColor: Self { .init(keyPath: \.colors.accent) }
+    public static var primaryColor: Self { .init(keyPath: \.colors.primary) }
 }
 #endif

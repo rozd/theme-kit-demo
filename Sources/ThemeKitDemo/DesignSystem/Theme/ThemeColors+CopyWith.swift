@@ -8,13 +8,13 @@ extension ThemeColors {
         surface: ThemeAdaptiveStyle<Color>? = nil,
         onSurface: ThemeAdaptiveStyle<Color>? = nil,
         icon: ThemeAdaptiveStyle<Color>? = nil,
-        accent: ThemeAdaptiveStyle<Color>? = nil
+        primary: ThemeAdaptiveStyle<Color>? = nil
     ) -> ThemeColors {
         ThemeColors(
             surface: surface ?? self.surface,
             onSurface: onSurface ?? self.onSurface,
             icon: icon ?? self.icon,
-            accent: accent ?? self.accent
+            primary: primary ?? self.primary
         )
     }
 }

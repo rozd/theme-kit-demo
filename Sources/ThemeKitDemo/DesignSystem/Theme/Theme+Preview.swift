@@ -19,7 +19,7 @@ public struct ThemePreview: View {
                             ColorSwatch(name: "surface", style: .surface)
                             ColorSwatch(name: "onSurface", style: .onSurface)
                             ColorSwatch(name: "icon", style: .icon)
-                            ColorSwatch(name: "accent", style: .accentColor)
+                            ColorSwatch(name: "primary", style: .primaryColor)
                     }
                 }
                 // MARK: - Gradients

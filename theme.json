@@ -5,7 +5,7 @@
       "surface",
       "onSurface",
       "icon",
-      { "name": "accent", "style": "accentColor" }
+      { "name": "primary", "style": "primaryColor" }
     ],
     "gradients": [
       "primaryGradient",
