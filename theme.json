@@ -22,7 +22,6 @@
   },
   "config": {
     "outputPath": "Sources/ThemeKitDemo/DesignSystem/Theme",
-    "shouldGeneratePreview": true,
-    "androidNativeShapeStyle": true
+    "shouldGeneratePreview": true
   }
 }

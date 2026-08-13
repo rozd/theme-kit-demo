@@ -12,10 +12,3 @@ nonisolated extension EnvironmentValues {
         set { self[ThemeEnvironmentKey.self] = newValue }
     }
 }
-
-nonisolated extension View {
-    /// Applies `theme` to this view hierarchy.
-    public func theme(_ theme: Theme) -> some View {
-        environment(\.theme, theme)
-    }
-}

@@ -32,8 +32,11 @@ nonisolated extension ThemeShapeStyle: ThemeStyleResolving where Style: AndroidR
         colorScheme: ColorScheme,
         sizeClass: UserInterfaceSizeClass?
     ) -> AndroidStyleRendering {
+        // Custom-Resolver tokens resolve to nil here: their closures need
+        // EnvironmentValues, which cannot be constructed on Android.
         theme[keyPath: keyPath]
-            .androidAdaptiveRendering(colorScheme: colorScheme, sizeClass: sizeClass)
+            .resolved(colorScheme: colorScheme, sizeClass: sizeClass)?
+            .androidRendering ?? .unsupported
     }
 }
 
