@@ -27,3 +27,26 @@ let package = Package(
         ], resources: [.process("Resources")], plugins: [.plugin(name: "skipstone", package: "skip")]),
     ]
 )
+
+// Setting SKIP_DEPENDENCY_ROOT to a directory of local Skip checkouts points every Skip
+// dependency at those working copies, for exercising unreleased Skip changes.
+//
+// The demo needs its own copy of this because ThemeKit's manifest does the same rewrite: the
+// two would otherwise declare the same package identity two different ways and fail to resolve.
+// The rewrite is all-or-nothing for the same reason.
+//
+// No fork URL appears here — only local paths, and only when the variable is set.
+if let dependencyRoot = Context.environment["SKIP_DEPENDENCY_ROOT"] {
+    package.dependencies = package.dependencies.map { dependency in
+        guard case .sourceControl(_, let url, _) = dependency.kind,
+              let name = url.split(separator: "/").last?.split(separator: ".").first,
+              name.hasPrefix("skip") else {
+            return dependency
+        }
+        return .package(path: "\(dependencyRoot)/\(name)")
+    }
+    // Root path dependencies override transitive declarations of the same identity, so the
+    // Skip packages this manifest never names directly have to be pinned here too.
+    package.dependencies.append(.package(path: "\(dependencyRoot)/skip-model"))
+    package.dependencies.append(.package(path: "\(dependencyRoot)/skip-ui"))
+}

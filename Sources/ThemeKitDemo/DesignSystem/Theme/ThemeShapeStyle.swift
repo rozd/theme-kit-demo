@@ -16,6 +16,12 @@ nonisolated public struct ThemeShapeStyle<Style: Sendable & Codable & Equatable>
 
 // ShapeStyle conformance with custom resolve() is not available in SkipFuseUI on Android;
 // there the generated modifier overloads in View+ThemeStyles.swift render tokens instead.
+//
+// The same rule as the Sendable note above is why this type is not the one bridged to
+// Compose in native mode: on Android ShapeStyle inherits SkipUIBridging, JConvertible and
+// JObjectProtocol, and a conditional conformance would have to restate every one of them —
+// names that live in swift-jni, which an app target has no reason to depend on. The
+// accessors hand Compose an AnyShapeStyle instead.
 #if !os(Android)
 nonisolated extension ThemeShapeStyle: ShapeStyle where Style: ShapeStyle {
     nonisolated public func resolve(in environment: EnvironmentValues) -> some ShapeStyle {
