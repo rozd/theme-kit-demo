@@ -22,6 +22,7 @@
   },
   "config": {
     "outputPath": "Sources/ThemeKitDemo/DesignSystem/Theme",
-    "shouldGeneratePreview": true
+    "shouldGeneratePreview": true,
+    "androidSupport": true
   }
 }

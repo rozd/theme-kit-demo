@@ -3,9 +3,7 @@
 import SwiftUI
 import ThemeKit
 
-// #Preview macro is not available in SkipFuseUI on Android.
 #if !os(Android)
-/// A SwiftUI view that renders all theme tokens as a visual palette.
 public struct ThemePreview: View {
 
     public var body: some View {

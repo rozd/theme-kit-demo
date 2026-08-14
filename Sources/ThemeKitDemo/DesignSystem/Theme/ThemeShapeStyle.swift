@@ -3,9 +3,6 @@
 import SwiftUI
 import ThemeKit
 
-// Sendable is stated unconditionally: on Apple the conditional ShapeStyle conformance
-// below inherits Sendable, and an inherited protocol is not implied by a conditional
-// conformance, so it has to be satisfied up front.
 nonisolated public struct ThemeShapeStyle<Style: Sendable & Codable & Equatable>: Equatable, Sendable {
     nonisolated let keyPath: KeyPath<Theme, ThemeAdaptiveStyle<Style>>
 
@@ -14,8 +11,6 @@ nonisolated public struct ThemeShapeStyle<Style: Sendable & Codable & Equatable>
     }
 }
 
-// ShapeStyle conformance with custom resolve() is not available in SkipFuseUI on Android;
-// there the generated modifier overloads in View+ThemeStyles.swift render tokens instead.
 #if !os(Android)
 nonisolated extension ThemeShapeStyle: ShapeStyle where Style: ShapeStyle {
     nonisolated public func resolve(in environment: EnvironmentValues) -> some ShapeStyle {

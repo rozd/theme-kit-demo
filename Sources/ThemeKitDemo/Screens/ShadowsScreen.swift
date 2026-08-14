@@ -5,7 +5,7 @@ import ThemeKit
 ///
 /// `.cardSurface.card` is the interesting one: a shadow token chained onto a *style* token, which
 /// only resolves because the modifier's parameter is a protocol-constrained generic — `ShapeStyle`
-/// on Apple, ThemeKit's generated `ThemeStyleResolving` on Android. Chaining onto a non-theme
+/// on Apple, ThemeKit's generated `AndroidShapeStyleAdapter` on Android. Chaining onto a non-theme
 /// style (`.red.card`) is Apple-only for now; letting `Color` conform on Android would make
 /// `.foregroundStyle(.red)` ambiguous with Skip's own modifier.
 struct ShadowsScreen: View {

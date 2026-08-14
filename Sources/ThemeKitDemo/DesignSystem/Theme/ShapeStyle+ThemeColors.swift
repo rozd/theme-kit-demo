@@ -3,9 +3,6 @@
 import SwiftUI
 import ThemeKit
 
-// The two blocks are mutually exclusive — emitting both would be a redeclaration.
-// ThemeStyleResolving is the Android stand-in for ShapeStyle as a namespace, so the
-// accessors keep the same spelling and the same chaining behaviour on both platforms.
 #if !os(Android)
 nonisolated extension ShapeStyle where Self == ThemeShapeStyle<Color> {
     public static var surface: Self { .init(keyPath: \.colors.surface) }
@@ -15,7 +12,7 @@ nonisolated extension ShapeStyle where Self == ThemeShapeStyle<Color> {
     public static var primaryColor: Self { .init(keyPath: \.colors.primary) }
 }
 #else
-nonisolated extension ThemeStyleResolving where Self == ThemeShapeStyle<Color> {
+nonisolated extension AndroidShapeStyleAdapter where Self == ThemeShapeStyle<Color> {
     public static var surface: Self { .init(keyPath: \.colors.surface) }
     public static var cardSurface: Self { .init(keyPath: \.colors.cardSurface) }
     public static var onSurface: Self { .init(keyPath: \.colors.onSurface) }

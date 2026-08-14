@@ -3,15 +3,12 @@
 import SwiftUI
 import ThemeKit
 
-// The two blocks are mutually exclusive — emitting both would be a redeclaration.
-// ThemeStyleResolving is the Android stand-in for ShapeStyle as a namespace, so the
-// accessors keep the same spelling and the same chaining behaviour on both platforms.
 #if !os(Android)
 nonisolated extension ShapeStyle where Self == ThemeShapeStyle<MeshGradient> {
     public static var primaryBackground: Self { .init(keyPath: \.meshGradients.primaryBackground) }
 }
 #else
-nonisolated extension ThemeStyleResolving where Self == ThemeShapeStyle<MeshGradient> {
+nonisolated extension AndroidShapeStyleAdapter where Self == ThemeShapeStyle<MeshGradient> {
     public static var primaryBackground: Self { .init(keyPath: \.meshGradients.primaryBackground) }
 }
 #endif

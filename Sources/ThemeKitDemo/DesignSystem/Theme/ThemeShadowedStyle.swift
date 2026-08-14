@@ -15,9 +15,6 @@ nonisolated public struct ThemeShadowedStyle<Base: Sendable>: Sendable {
 
 extension ThemeShadowedStyle: Equatable where Base: Equatable {}
 
-// ShadowStyle and ShapeStyle conformance with custom resolve() are not available in
-// SkipFuseUI on Android; there the shadow is applied as a view modifier instead, by the
-// overloads in View+ThemeStyles.swift.
 #if !os(Android)
 nonisolated extension ThemeShadowedStyle: ShapeStyle where Base: ShapeStyle {
     nonisolated public func resolve(in environment: EnvironmentValues) -> some ShapeStyle {
